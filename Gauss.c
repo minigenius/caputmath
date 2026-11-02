@@ -5,7 +5,7 @@
 
 
 int main(){
-    FILE *file_matr = fopen("matrich.txt", "r");
+    FILE *file_matr = fopen("matrichGAUSS.txt", "r");
     if (file_matr == NULL) return 1;
     double **matr = fmatrica(file_matr);
     const int col = columnMatr(file_matr);
