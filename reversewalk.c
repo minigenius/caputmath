@@ -6,7 +6,7 @@ int main(){
     double **matr = fmatrica(fileM);
     int string = stringMatr(fileM);
     int column = columnMatr(fileM);
-    printf(" %i %i ", string, column);
+    printf(" %i %i \n ", string, column);
 
     printMatr(matr,string,column);
 
@@ -25,9 +25,9 @@ int main(){
 
     double *l = malloc(sizeof(double) * (string - 1) );
 
-    for (int i = 0; i < string - 1; i++) l[i] = matr[i][i - 1];
+    for (int i = 0; i < string ; i++) l[i] = matr[i][i - 1];
     printf(" \n ");
-    for (int i = 0; i < string - 1; i ++) printf(" %f ", l[i]);
+    for (int i = 0; i < string ; i ++) printf(" %f ", l[i]);
 
     double *r = malloc( sizeof(double) * (string - 1) );
 
@@ -43,7 +43,7 @@ int main(){
     x[string - 1] = p[string - 1];
 
     for (int n = string - 2; n > 0; n --) {
-        p[n] = (f[n]- l[n] * p[n - 1]) / (c[n - 1] - l[n - 1] * q[n - 2] );
+        p[n] = (f[n]- l[n] * p[n - 1]) / (c[n] - l[n] * q[n - 1] );
         q[n] = r[n] / (c[n] - l[n] * q[n - 1]) ;
         x[n] = p[n] - q[n] * x[n + 1];
     }
