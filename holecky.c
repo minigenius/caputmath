@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "matr.h"
 int main(){
+
     FILE *filematr = fopen("holecki.txt", "r");
     int string = stringMatr(filematr);
     double **matr = fmatrica(filematr);
@@ -22,21 +23,20 @@ int main(){
 
     L[0][0] = sqrt(matr[0][0]);
     for (int i = 1; i < string; i ++) L[i][0] = matr[i][0] / L[0][0];
-    L[1][1] = sqrt(matr[1][1] - L[1][0] * L[1][0]);
-    for (int i = 2; i < string; i ++) L[i][1] = ( matr[i][1] - L[i][0] * L[1][0]) /  L[1][1];
-    for ( int k = 2; k < string; k ++) {
+
+    for ( int k = 1; k < string; k ++) {
 
         double sum = 0.0;
         for (int j = 0; j <= k - 1; j++) sum += L[k][j] * L[k][j];
         L[k][k] = sqrt( matr[k][k] - sum );
-
+        if (k < string - 1) {
         for (int i = k + 1; i < string; i ++) {
 
             double sum2 = 0.0;
             for (int j = 0; j <= k - 1; j++) sum2 += L[i][j] * L[k][j];
             L[i][k] = (matr[i][k] - sum2) / L[k][k];
         }
-
+    }
     }
 
 
@@ -47,28 +47,28 @@ int main(){
 
   printf(" \n  ");
   printMatr(U, string, string);
+  printMatr(L, string, string);
 
   double *x = malloc(sizeof(double) * string);
   double *y = malloc(sizeof(double) * string);
   y[0] = B[0] / L[0][0];
 
       for (int k = 1; k < string; k ++) {
-
           double sum = 0.0;
 
           for (int m = 0; m <= k - 1; m ++) sum += L[k][m] * y[m];
-          y[k] = 1 / L[k][k] * (B[k] - sum);
+          y[k] = (B[k] - sum) / L[k][k];
 
 
       }
 
-      x[string - 1] = y[string - 1];
+      x[string - 1] = y[string - 1] / U[string - 1][ string - 1];
 
       for ( int k = string - 2; k >= 0; k --)  {
 
           double sum = 0.0;
           for( int m = k + 1; m < string; m ++) sum += U[k][m] * x[m];
-          x[k] = y[k] - sum;
+          x[k] = (y[k] - sum) / U[k][k];
 
       }
 
